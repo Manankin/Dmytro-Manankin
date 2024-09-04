@@ -19,10 +19,10 @@ function App() {
 
   useEffect(() => {
     if (inputField && outputField) {
-      if (outputAmount) {
-        setInputAmount(calculateCurrency(outputField, inputField, outputAmount));
-      } else if (inputAmount) {
+      if (inputAmount) {
         setOutputAmount(calculateCurrency(inputField, outputField, inputAmount));
+      } else if (outputAmount) {
+        setInputAmount(calculateCurrency(outputField, inputField, outputAmount));
       }
     }
 
@@ -33,13 +33,19 @@ function App() {
     if (!outputField) {
       setOutputAmount('')
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputField, outputField])
 
   const inputHandleBlur = () => {
     if (currencyNames.includes(searchInput.trim().toLowerCase())) {
       setInputField(listOfCurency.find(elem => elem.currency.toLowerCase() === searchInput.trim().toLowerCase()));
     }
-    setSearchInput('')
+  }
+
+  const outputHandleBlur = () => {
+    if (currencyNames.includes(searchOutput.trim().toLowerCase())) {
+      setOutputField(listOfCurency.find(elem => elem.currency.toLowerCase() === searchOutput.trim().toLowerCase()));
+    }
   }
 
   const inputHandleFocus = () => {
@@ -48,6 +54,14 @@ function App() {
       setInputField('');
     } else {
       setSearchInput('')
+  }}
+
+  const outputHandleFocus = () => {
+    if (outputField) {
+      setSearchOutput(outputField.currency);
+      setOutputField('');
+    } else {
+      setSearchOutput('')
   }}
 
   return (
@@ -60,7 +74,7 @@ function App() {
           <input
             className={!prepareCurrencyList(listOfCurency, searchInput).length ? 'error' : ''}
             type="text"
-            value={searchInput || inputField.currency}
+            value={inputField.currency || searchInput || ''}
             placeholder='choose a currency'
             onFocus={inputHandleFocus}
             onBlur={inputHandleBlur}
@@ -100,11 +114,20 @@ function App() {
         <h2>Type currency name to exchange or choose it from the list below</h2>
         <div className='inputs'>
           <input
+            className={!prepareCurrencyList(listOfCurency, searchOutput).length ? 'error' : ''}
             type="text"
             placeholder='choose a currency'
-            value={outputField.currency}
-            onChange={(e) => setSearchOutput(e.target.value)}
+            value={outputField.currency || searchOutput || ''}
+            // value={outputField.currency}
+            onFocus={outputHandleFocus}
+            onBlur={outputHandleBlur}
+            onChange={(e) => {
+              setSearchOutput(e.target.value)
+            }}
           />
+          {!prepareCurrencyList(listOfCurency, searchOutput).length &&
+          <span className='warning'>No any matches with currency name... Try smth else</span>
+          }
           <input
             type="text"
             value={outputAmount}
@@ -119,7 +142,10 @@ function App() {
           <span
             key={item.id}
             className="list-item"
-            onClick={() => setOutputField(item)}
+            onClick={() => {
+              setOutputField(item)
+              setSearchOutput('')
+            }}
           >{item.currency}</span>
         ))}
         </div>

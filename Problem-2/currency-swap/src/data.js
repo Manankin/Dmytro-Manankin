@@ -1,4 +1,5 @@
-export const currencyList = [{"currency":"BLUR","date":"2023-08-29T07:10:40.000Z","price":0.20811525423728813},
+export const currencyList = [
+  {"currency":"BLUR","date":"2023-08-29T07:10:40.000Z","price":0.20811525423728813},
   {"currency":"bNEO","date":"2023-08-29T07:10:50.000Z","price":7.1282679},
   {"currency":"BUSD","date":"2023-08-29T07:10:40.000Z","price":0.999183113},
   {"currency":"BUSD","date":"2023-08-29T07:10:40.000Z","price":0.9998782611186441},
@@ -33,4 +34,5 @@ export const currencyList = [{"currency":"BLUR","date":"2023-08-29T07:10:40.000Z
   {"currency":"WBTC","date":"2023-08-29T07:10:52.000Z","price":26002.82202020202},
   {"currency":"wstETH","date":"2023-08-29T07:10:40.000Z","price":1872.2579742372882},
   {"currency":"YieldUSD","date":"2023-08-29T07:10:40.000Z","price":1.0290847966101695},
-  {"currency":"ZIL","date":"2023-08-29T07:10:50.000Z","price":0.01651813559322034}]
+  {"currency":"ZIL","date":"2023-08-29T07:10:50.000Z","price":0.01651813559322034}
+]
