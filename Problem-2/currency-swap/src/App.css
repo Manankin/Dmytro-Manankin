@@ -43,6 +43,9 @@
 }
 
 .inputs {
+  position: relative;
+  margin-inline: 8px;
+  padding-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -58,6 +61,10 @@ input {
   border-radius: 4px;
 }
 
+input:focus-visible {
+  outline: none;
+}
+
 input:focus {
   border: none;
 }
@@ -65,4 +72,21 @@ input:focus {
 .input-amount {
   text-align: right;
   flex-grow: 1;
+}
+
+.warning {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  color: red;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.error {
+  background-color:pink;
+}
+
+input.error {
+  outline: 4px solid red;
 }

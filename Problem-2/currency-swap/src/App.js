@@ -7,6 +7,7 @@ import calculateCurrency from './features/calculateCurrency';
 import prepareCurrencyList from './features/prepareCurrencyList';
 
 const listOfCurency = formatCurrencyList(filterCurrencyList(currencyList));
+const currencyNames = listOfCurency.map(item => item.currency.toLowerCase());
 
 function App() {
   const [inputField, setInputField] = useState('');
@@ -16,9 +17,38 @@ function App() {
   const [searchInput, setSearchInput] = useState('')
   const [searchOutput, setSearchOutput] = useState('')
 
-  // useEffect(() => {
-  //   setOutputAmount(calculateCurrency(inputField, outputField, inputField))
-  // }, [inputField, inputAmount, outputField, outputAmount])
+  useEffect(() => {
+    if (inputField && outputField) {
+      if (outputAmount) {
+        setInputAmount(calculateCurrency(outputField, inputField, outputAmount));
+      } else if (inputAmount) {
+        setOutputAmount(calculateCurrency(inputField, outputField, inputAmount));
+      }
+    }
+
+    if (!inputField) {
+      setInputAmount('')
+    }
+
+    if (!outputField) {
+      setOutputAmount('')
+    }
+  }, [inputField, outputField])
+
+  const inputHandleBlur = () => {
+    if (currencyNames.includes(searchInput.trim().toLowerCase())) {
+      setInputField(listOfCurency.find(elem => elem.currency.toLowerCase() === searchInput.trim().toLowerCase()));
+    }
+    setSearchInput('')
+  }
+
+  const inputHandleFocus = () => {
+    if (inputField) {
+      setSearchInput(inputField.currency);
+      setInputField('');
+    } else {
+      setSearchInput('')
+  }}
 
   return (
     <div className="App">
@@ -28,11 +58,19 @@ function App() {
         <h2>Type currency name to exchange or choose it from the list below</h2>
         <div className="inputs">
           <input
+            className={!prepareCurrencyList(listOfCurency, searchInput).length ? 'error' : ''}
             type="text"
-            value={inputField.currency}
+            value={searchInput || inputField.currency}
             placeholder='choose a currency'
-            onChange={(e) => setSearchInput(e.target.value)}
+            onFocus={inputHandleFocus}
+            onBlur={inputHandleBlur}
+            onChange={(e) => {
+              setSearchInput(e.target.value)
+            }}
           />
+          {!prepareCurrencyList(listOfCurency, searchInput).length &&
+          <span className='warning'>No any matches with currency name... Try smth else</span>
+          }
           <input
             type="text"
             placeholdder='enter amount here'
@@ -49,12 +87,15 @@ function App() {
           <span
             key={item.id}
             className="list-item"
-            onClick={() => setInputField(item)}
+            onClick={() => {
+              setInputField(item)
+              setSearchInput('')
+            }}
           >{item.currency}</span>
         ))}
         </div>
       </div>
-      {/* <div className='switch'>switch currency</div> */}
+
       <div className="input-block">
         <h2>Type currency name to exchange or choose it from the list below</h2>
         <div className='inputs'>
