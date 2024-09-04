@@ -1,0 +1,68 @@
+.App {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #282c34;
+  color: white;
+  gap: 16px;
+  /* flex-direction: column; */
+  min-height: 100vh;
+}
+
+.container {
+  width: 1080px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  overflow: hidden;
+}
+
+.currency-list {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-item {
+  padding: 6px;
+  border: 1px solid #c4c4c4;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.list-item:hover {
+  cursor: pointer;
+  background-color: black;
+}
+
+.inputs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+input {
+  padding: 12px;
+  font-size: 14px;
+  line-height: 16px;
+  max-width: 50%;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+input:focus {
+  border: none;
+}
+
+.input-amount {
+  text-align: right;
+  flex-grow: 1;
+}
