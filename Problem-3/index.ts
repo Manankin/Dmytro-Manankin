@@ -16,6 +16,7 @@ interface FormattedWalletBalance {
 
 // судячи з назв цих пропсів то Props  мав би бути базовим (але як вже маємо)
 // всередині фігурних дужок треба додати якусь властивість або метод, так як базу ми розширюємо
+// треба зробити імпорт сутності BoxProps
 interface Props extends BoxProps {
 // додаємо властивість(ті) або метод(и)
 }
@@ -115,8 +116,8 @@ const sorted_Balances = useMemo(() => {
   }).map((balance: WalletBalance) => {
     return {
       ...balance,
-      formatted: balance.amount.toFixed()б
-      id: 
+      formatted: balance.amount.toFixed(),
+      id: new Date()
     }
   })
 }, [balances, prices]);
