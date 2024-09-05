@@ -5,6 +5,7 @@ import filterCurrencyList from './features/filterCurrencyList';
 import formatCurrencyList from './features/formatCurrencyList';
 import calculateCurrency from './features/calculateCurrency';
 import checkList from './checkList';
+import checkInputAmount from './features/checkInputAmount';
 
 const listOfCurency = formatCurrencyList(filterCurrencyList(currencyList));
 const currencyNames = listOfCurency.map(item => item.currency.toLowerCase());
@@ -102,10 +103,10 @@ function App() {
             type="text"
             placeholdder='enter amount here'
             value={inputAmount}
-            className='input-amount'
+            className={checkInputAmount(inputAmount) ? 'input-amount' : 'input-amount error'}
             onChange={(e) => {
-              setInputAmount(+e.target.value)
-              setOutputAmount(calculateCurrency(inputField, outputField, e.target.value))
+              setInputAmount(e.target.value.replace(/[^0-9.]/g, ''))
+              setOutputAmount(calculateCurrency(inputField, outputField, e.target.value.replace(/[^0-9.]/g, '')))
             }}
           />
         </div>
@@ -145,10 +146,10 @@ function App() {
           <input
             type="text"
             value={outputAmount}
-            className='input-amount'
+            className={checkInputAmount(outputAmount) ? 'input-amount' : 'input-amount error'}
             onChange={(e) => {
-              setOutputAmount(+e.target.value)
-              setInputAmount(calculateCurrency(outputField, inputField, +e.target.value))}}
+              setOutputAmount(e.target.value.replace(/[^0-9.]/g, ''))
+              setInputAmount(calculateCurrency(outputField, inputField, e.target.value.replace(/[^0-9.]/g, '')))}}
           />
         </div>
         <div className="currency-list list">
