@@ -90,3 +90,8 @@ input:focus {
 input.error {
   outline: 4px solid red;
 }
+
+
+.hidden {
+  display: none;
+}

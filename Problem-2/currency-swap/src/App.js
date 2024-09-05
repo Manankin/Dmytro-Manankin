@@ -4,7 +4,7 @@ import { currencyList } from './data';
 import filterCurrencyList from './features/filterCurrencyList';
 import formatCurrencyList from './features/formatCurrencyList';
 import calculateCurrency from './features/calculateCurrency';
-import prepareCurrencyList from './features/prepareCurrencyList';
+import checkList from './checkList';
 
 const listOfCurency = formatCurrencyList(filterCurrencyList(currencyList));
 const currencyNames = listOfCurency.map(item => item.currency.toLowerCase());
@@ -46,7 +46,7 @@ function App() {
     if (searchInput) {
         timeoutId = setTimeout(()=> {
         setSearchInput('')
-      }, 250)
+      }, 150)
     }
   }
 
@@ -55,11 +55,10 @@ function App() {
       setOutputField(listOfCurency.find(elem => elem.currency.toLowerCase() === searchOutput.trim().toLowerCase()));
     }
 
-    if (searchInput) {
+    if (searchOutput) {
       timeoutId = setTimeout(()=> {
       setSearchOutput('')
-    }, 250)
-  }
+    }, 150)}
   }
 
   const inputHandleFocus = () => {
@@ -86,7 +85,7 @@ function App() {
         <h2>Type currency name to exchange or choose it from the list below</h2>
         <div className="inputs">
           <input
-            className={!prepareCurrencyList(listOfCurency, searchInput).length ? 'error' : ''}
+            className={listOfCurency.some(item => checkList(item, searchInput)) ? '' : 'error'}
             type="text"
             value={inputField.currency || searchInput || ''}
             placeholder='choose a currency'
@@ -96,7 +95,7 @@ function App() {
               setSearchInput(e.target.value)
             }}
           />
-          {!prepareCurrencyList(listOfCurency, searchInput).length &&
+          {!listOfCurency.some(item => checkList(item, searchInput)) &&
           <span className='warning'>No any matches with currency name... Try smth else</span>
           }
           <input
@@ -111,10 +110,10 @@ function App() {
           />
         </div>
         <div className="currency-list list">
-        { prepareCurrencyList(listOfCurency, searchInput).map(item => (
+        { listOfCurency.map(item => (
           <span
             key={item.id}
-            className="list-item"
+            className={item.currency.toLowerCase().includes(searchInput.trim().toLowerCase()) ? 'list-item' : 'hidden'}
             onClick={() => {
               clearTimeout(timeoutId);
               setInputField(item)
@@ -130,7 +129,7 @@ function App() {
         <h2>Type currency name to exchange or choose it from the list below</h2>
         <div className='inputs'>
           <input
-            className={!prepareCurrencyList(listOfCurency, searchOutput).length ? 'error' : ''}
+            className={listOfCurency.some(item => checkList(item, searchOutput)) ? '' : 'error'}
             type="text"
             placeholder='choose a currency'
             value={outputField.currency || searchOutput || ''}
@@ -140,7 +139,7 @@ function App() {
               setSearchOutput(e.target.value)
             }}
           />
-          {!prepareCurrencyList(listOfCurency, searchOutput).length &&
+          {!listOfCurency.some(item => checkList(item, searchOutput)) &&
           <span className='warning'>No any matches with currency name... Try smth else</span>
           }
           <input
@@ -153,10 +152,10 @@ function App() {
           />
         </div>
         <div className="currency-list list">
-        { prepareCurrencyList(listOfCurency, searchOutput).map(item => (
+        { listOfCurency.map(item => (
           <span
             key={item.id}
-            className="list-item"
+            className={item.currency.toLowerCase().includes(searchOutput.trim().toLowerCase()) ? 'list-item' : 'hidden'}
             onClick={() => {
               clearTimeout(timeoutId);
               setOutputField(item)
