@@ -9,13 +9,15 @@ import prepareCurrencyList from './features/prepareCurrencyList';
 const listOfCurency = formatCurrencyList(filterCurrencyList(currencyList));
 const currencyNames = listOfCurency.map(item => item.currency.toLowerCase());
 
+
 function App() {
   const [inputField, setInputField] = useState('');
   const [inputAmount, setInputAmount] = useState('');
   const [outputField, setOutputField] = useState('');
   const [outputAmount, setOutputAmount] = useState('');
-  const [searchInput, setSearchInput] = useState('')
-  const [searchOutput, setSearchOutput] = useState('')
+  const [searchInput, setSearchInput] = useState('');
+  const [searchOutput, setSearchOutput] = useState('');
+  let timeoutId;
 
   useEffect(() => {
     if (inputField && outputField) {
@@ -40,12 +42,24 @@ function App() {
     if (currencyNames.includes(searchInput.trim().toLowerCase())) {
       setInputField(listOfCurency.find(elem => elem.currency.toLowerCase() === searchInput.trim().toLowerCase()));
     }
+
+    if (searchInput) {
+        timeoutId = setTimeout(()=> {
+        setSearchInput('')
+      }, 250)
+    }
   }
 
   const outputHandleBlur = () => {
     if (currencyNames.includes(searchOutput.trim().toLowerCase())) {
       setOutputField(listOfCurency.find(elem => elem.currency.toLowerCase() === searchOutput.trim().toLowerCase()));
     }
+
+    if (searchInput) {
+      timeoutId = setTimeout(()=> {
+      setSearchOutput('')
+    }, 250)
+  }
   }
 
   const inputHandleFocus = () => {
@@ -102,9 +116,12 @@ function App() {
             key={item.id}
             className="list-item"
             onClick={() => {
+              console.log('set start', item, searchInput)
+              clearTimeout(timeoutId);
               setInputField(item)
               setSearchInput('')
-            }}
+            }
+          }
           >{item.currency}</span>
         ))}
         </div>
@@ -118,7 +135,6 @@ function App() {
             type="text"
             placeholder='choose a currency'
             value={outputField.currency || searchOutput || ''}
-            // value={outputField.currency}
             onFocus={outputHandleFocus}
             onBlur={outputHandleBlur}
             onChange={(e) => {
@@ -143,6 +159,7 @@ function App() {
             key={item.id}
             className="list-item"
             onClick={() => {
+              clearTimeout(timeoutId);
               setOutputField(item)
               setSearchOutput('')
             }}
