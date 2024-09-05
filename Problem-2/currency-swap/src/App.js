@@ -116,7 +116,6 @@ function App() {
             key={item.id}
             className="list-item"
             onClick={() => {
-              console.log('set start', item, searchInput)
               clearTimeout(timeoutId);
               setInputField(item)
               setSearchInput('')
